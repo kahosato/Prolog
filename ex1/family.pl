@@ -51,4 +51,33 @@ female( margaret ).
 female( rebecca ).
 female( louise ).
 
+mother_of(M, C):-
+    female(M),
+    child_of(C, M).
+
+grandparent_of(GP, C):-
+    child_of(C, P),
+    child_of(P, GP).
+
+daughter_of(D, P):-
+    child_of(D, P),
+    female(D).
+
+sibling_of(X, Y):-
+    child_of(X, F),
+    child_of(Y, F),
+    X \= Y.
+
+uncle_of(U, N):-
+    sibling_of(U, P),
+    child_of(P, N),
+    male(U).
+
+ancestor_of(Anc, X):-
+    child_of(X, Anc).
+
+ancestor_of(Anc, X):-
+    child_of(X, P),
+    ancestor_of(Anc, P).
+
 % end of data
