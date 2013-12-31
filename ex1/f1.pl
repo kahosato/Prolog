@@ -76,6 +76,5 @@ sibling_of(A, B):-
     A \= B.
 
 niece_of(N, X):-
-    \+ female(N),
     child_of(N, P),
     sibling_of(P, X).
