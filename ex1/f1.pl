@@ -76,5 +76,17 @@ sibling_of(A, B):-
     A \= B.
 
 niece_of(N, X):-
+    "\+ famele(N) cannot be written here because N is not limited"
     child_of(N, P),
-    sibling_of(P, X).
+    sibling_of(P, X)
+    \+ female(N).
+
+ancestor_of(Anc, X):-
+    parent_of(Anc, Y),
+    ancestor_of(Y, X).
+
+ancestor_of(Anc, X):-
+    parent_of(Anc, X).
+
+parent_of(P, C):-
+    child_of(C, P).
