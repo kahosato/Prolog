@@ -54,3 +54,28 @@ female( louise ).
 mother_of(M, X):-
     female(M),
     child_of(X, M).
+
+grandparent_of(GP, C):-
+    child_of(C, P),
+    child_of(P, GP).
+
+daughter_of(D, P):-
+    female(D),
+    child_of(D, P).
+
+uncle_of(U, N):-
+    child_of(U, GP),
+    child_of(P, GP),
+    \+ female(U),
+    U \= P,
+    child_of(N, P).
+
+sibling_of(A, B):-
+    child_of(A, P),
+    child_of(B, P),
+    A \= B.
+
+niece_of(N, X):-
+    \+ female(N),
+    child_of(N, P),
+    sibling_of(P, X).
