@@ -10,20 +10,20 @@ ones_zeros([1|X]) :- ones_zeros(X).
 ones_zeros([0|X]) :- ones_zeros(X).
 
 hasdups([X|Y]) :- member(X, Y).
-hasdups([X|Y]) :- hasdups(Y).
+hasdups([_|Y]) :- hasdups(Y).
 
 least(X, Y, X) :- X < Y, !.
 least(X, Y, Y) :- X >= Y, !.
 
-prod(L, P):- prodh(L, A, P).
+prod(L, P):- prodh(L, 1, P).
 prodh([], A, A).
 prodh([X|Y], A, P):-
-    Acc is A * Y,
+    Acc is A * X,
     prodh(Y, Acc, P).
 
 contains(L1, L2, N):-
     append(F, L2, S),
-    append(S, A, L1),
+    append(S, _, L1),
     length(F, X),
     N is X + 1.
 
@@ -41,4 +41,4 @@ add_poly([(A, B)|X], [(C, D)|Y], Acc, P) :-
     append(Acc, [(C,D)], NewAcc),
     add_poly([(A,B)|X], Y, NewAcc, P).
 
-
+add_p(X, Y, P) :- add_poly(X, Y, [], P).
