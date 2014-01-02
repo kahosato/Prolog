@@ -22,11 +22,23 @@ prodh([X|Y], A, P):-
     prodh(Y, Acc, P).
 
 contains(L1, L2, N):-
-    length(L1, X),
-    length(L2, Y),
     append(F, L2, S),
-    append(S, A, L1).
-    length(F, M),
-    length(A, L),
-    M is N-1,
-    L is X-Y-N+1,
+    append(S, A, L1),
+    length(F, X),
+    N is X + 1.
+
+add_poly([], Y, Acc, P):- append(Acc, Y, P).
+add_poly(X, [], Acc, P):- append(Acc, X, P).
+add_poly([(A, B)|X], [(C, D)|Y], Acc, P) :-
+    B == D,
+    E is A + C,
+    append(Acc, [(E, B)], NewAcc),
+    add_poly(X, Y, NewAcc, P);
+    B > D,
+    append(Acc, [(A,B)], NewAcc),
+    add_poly(X, [(C, D)|Y], NewAcc, P);
+    B < D,
+    append(Acc, [(C,D)], NewAcc),
+    add_poly([(A,B)|X], Y, NewAcc, P).
+
+
