@@ -10,7 +10,7 @@ path(X, Z):-
     arc(X, Z).
 
 path(X, Z):-
-    path(X, Y),
+    arc(X, Y),
     path(Y, Z).
 
 
