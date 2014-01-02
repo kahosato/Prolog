@@ -24,9 +24,9 @@ prodh([X|Y], A, P):-
 contains(L1, L2, N):-
     length(L1, X),
     length(L2, Y),
-    M is N-1,
-    L is X-Y-N+1
-    length(F, M),
-    length(A, L),
     append(F, L2, S),
     append(S, A, L1).
+    length(F, M),
+    length(A, L),
+    M is N-1,
+    L is X-Y-N+1,
