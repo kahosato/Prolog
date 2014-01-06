@@ -38,7 +38,7 @@ rw2(X, Y) :- findall(wrap(A), member(A, X), Y).
 
 even_members(X, Y) :- em(X, o, [], Y)
 em([], _, A, A).
-em([H|T], o, A, Y) :- em(T, e, A, Y).
+em([_|T], o, A, Y) :- em(T, e, A, Y).
 em([H|T], e, A, Y) :- append(A, [H], NA), em(T, o, NA, Y ).
 
 numval(A, A):-number(A).
@@ -80,8 +80,8 @@ bigger(X, Y, X) :-
 bigger(X, Y, Y) :-
     X < Y, !. 
 
-oldest_people(L, Oldest) :- o_p(list, 0, [], Oldest).
-o_p([], Age, Oldest, Oldest).
+oldest_people(L, Oldest) :- o_p(L, 0, [], Oldest).
+o_p([], _, Oldest, Oldest).
 o_p([(P, A, _)|T], Age, AO, Oldest):-
     A > Age
     ->
