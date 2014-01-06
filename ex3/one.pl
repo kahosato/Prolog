@@ -75,6 +75,11 @@ m_a_a([H|T], Acc_max, Max, Num, Sum, Avg):-
     New_sum is Sum + H,
     m_a_a(T, New_max, Max, New_num, New_sum, Avg).
 
+bigger(X, Y, X) :- 
+    X >= Y, !.
+bigger(X, Y, Y) :-
+    X < Y, !. 
+
 oldest_people(L, Oldest) :- o_p(list, 0, [], Oldest).
 o_p([], Age, Oldest, Oldest).
 o_p([(P, A, _)|T], Age, AO, Oldest):-
