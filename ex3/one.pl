@@ -41,4 +41,15 @@ em([], _, A, A).
 em([H|T], o, A, Y) :- em(T, e, A, Y).
 em([H|T], e, A, Y) :- append(A, [H], NA), em(T, o, NA, Y ).
 
+numval(A, A):-number(A).
+numval(a(X, Y), V) :-
+    numval(X, V1), 
+    numval(Y, V2),
+    V is V1 +V2.
+numval(m(X, Y), V) :-
+    numval(X, V1),
+    numval(Y, V2),
+    V is V1 * V2.
 
+app(X, Y, [X|Y]).
+    
