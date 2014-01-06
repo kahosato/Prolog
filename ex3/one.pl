@@ -51,5 +51,41 @@ numval(m(X, Y), V) :-
     numval(Y, V2),
     V is V1 * V2.
 
-app(X, Y, [X|Y]).
-    
+app([], X, X).
+app([A|B], X, [A|Z]) :- app(B, X, Z).
+
+rev(X, Y) :- rev_h(X, [], Y).
+rev_h([], A, A).
+rev_h([H|T], A, Y):-
+    append([H], A, NA),
+    rev_h(T, NA, Y).
+
+average(L, A) :- avg(L, 0, 0, A).
+avg([], A, N, Avg) :- Avg is A / N.
+avg([H|T], A, N, Avg):-
+    NA is H+A,
+    NN is N + 1,
+    avg(T, NA, NN, Avg).
+% Assume list is list of natural number.
+max_and_avg(L, M, A) :- m_a_a(L, 0, M, 0, 0, A).
+m_a_a([], AM, AM, N, S, A) :- A is S/N.
+m_a_a([H|T], Acc_max, Max, Num, Sum, Avg):-
+    bigger(H, Acc_max, New_max),
+    New_num is Num + 1,
+    New_sum is Sum + H,
+    m_a_a(T, New_max, Max, New_num, New_sum, Avg).
+
+oldest_people(L, Oldest) :- o_p(list, 0, [], Oldest).
+o_p([], Age, Oldest, Oldest).
+o_p([(P, A, _)|T], Age, AO, Oldest):-
+    A > Age
+    ->
+    o_p(T, A, [P], Oldest)
+    ;
+    A == Age
+    ->
+    o_p(T, A, [P|AO], Oldest)
+    ;
+    o_p(T, Age, AO, Oldest).
+
+
