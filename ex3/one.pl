@@ -104,16 +104,14 @@ s_s([(P, female, _)|T], AM, Male, AF, Female) :-
 nodup(X, Y) :- nodup(X, [], Y).
 nodup([], A, A).
 nodup([X|T], A, Y) :- \+ member(X, A), !, nodup(T, [X|A], Y).
-nodup([X|T], A, Y) :- nodup(T, A, Y).
+nodup([_|T], A, Y) :- nodup(T, A, Y).
 
 quick_sort(List, Sorted) :- q_sort(List, [], Sorted).
 q_sort([], Acc, Acc).
 q_sort([H|T], Acc, Sorted) :- 
     pivoting(H, T, L1, L2),
-    q_sort(L1, Acc, Sorted1), q_sort(L2, [H|Sorted1], Sorted)
+    q_sort(L1, Acc, Sorted1), q_sort(L2, [H|Sorted1], Sorted).
 
-pivoting(H, T, L1, L2) :- pivoting(H, T, [], [], L1, L2).
-pivoting(H, [], L1, L2, L1, L2).
-pivoting(H, [X|Y], A1, A2, L1, L2) :- X <= H,!, pivoting(H, Y, [X|A1], A2, L1, L2).
-pivoting(H, [X|Y], A1, A2, L1, L2) :- pivoting(H, Y, A1, [X|A2], L1, L2).
-
+pivoting(H, [], L1, L2).
+pivoting(H, [X|Y], [X|A1], A2) :- X =< H,!, pivoting(H, Y, A1, A2).
+pivoting(H, [X|Y], A1, [X|A2]) :- pivoting(H, Y, A1, A2).
