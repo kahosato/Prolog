@@ -82,7 +82,7 @@ bigger(X, Y, Y) :-
 
 oldest_people(L, Oldest) :- o_p(L, 0, [], Oldest).
 o_p([], _, Oldest, Oldest).
-o_p([(P, A, _)|T], Age, AO, Oldest):-
+o_p([(P, A, _)|T], Age, [P], Oldest):-
     A > Age
     ->
     o_p(T, A, [P], Oldest)
@@ -92,5 +92,13 @@ o_p([(P, A, _)|T], Age, AO, Oldest):-
     o_p(T, A, [P|AO], Oldest)
     ;
     o_p(T, Age, AO, Oldest).
+
+split_sex(People, Male, Female) :-
+    s_s(People, [], Male, [], Female).
+s_s([], AM, AM, AF, AF).
+s_s([(P, male, _)|T], AM, Male, AF, Female) :-
+    s_s(T, [P|AM], Male, AF, Female).
+s_s([(P, female, _)|T], AM, Male, AF, Female) :-
+    s_s(T, AM, Male, [P|AF], Female).
 
 
