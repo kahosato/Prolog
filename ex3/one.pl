@@ -96,9 +96,14 @@ o_p([(P, A, _)|T], Age, [P], Oldest):-
 split_sex(People, Male, Female) :-
     s_s(People, [], Male, [], Female).
 s_s([], AM, AM, AF, AF).
-s_s([(P, male, _)|T], AM, Male, AF, Female) :-
-    s_s(T, [P|AM], Male, AF, Female).
+s_s([(P, male, _)|T], [P|AM], Male, AF, Female) :-
+    s_s(T, AM, Male, AF, Female).
 s_s([(P, female, _)|T], AM, Male, AF, Female) :-
     s_s(T, AM, Male, [P|AF], Female).
+
+nodup(X, Y) :- nodup(X, [], Y).
+nodup([], A, A).
+nodup([X|T], A, Y) :- \+ member(X, A), !, nodup(T, [X|A], Y).
+nodup([X|T], A, Y) :- nodup(T, A, Y).
 
 
