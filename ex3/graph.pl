@@ -24,6 +24,13 @@ c_p(So_far, Connected) :-
     rm(C2, S1, S2),
     merge(C1, C2, New_c),
     c_p([New_c|S2], Connected).
+
+% function that removes element S on its first occurence.
+rm(S, L1, L2) :- rm(S, L1, [], L2).
+rm(S, [], L2, L2).
+rm(S, [S|T1], A, L2) :- append(A, T1, L2).
+rm(S, [H|T1], A, L2]) :- rm(S, T1, [H|A], L2).
+
 connected_n(E, [H|T]) :- edge(E, H) ; edge(H, E) ; connected(E, T).
 connected_c([X], Y) :- connected(X, Y).
 connected_c([H|T], Y) :- connected(H, Y) ; connected_c(T, Y).
