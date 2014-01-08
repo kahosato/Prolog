@@ -34,10 +34,10 @@ rw([H|T], A, Y):-
 
 rw2(X, Y) :- findall(wrap(A), member(A, X), Y).
 
-even_members(X, Y) :- em(X, o, [])
+even_members(X, Y) :- em(X, o, Y).
 em([], _, []).
 em([_|T], o, L) :- em(T, e, L).
-em([H|T], e, [H|L]) :- em(T, o, Y ).
+em([H|T], e, [H|L]) :- em(T, o, L).
 
 numval(A, A):-number(A).
 numval(a(X, Y), V) :-
