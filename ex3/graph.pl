@@ -15,7 +15,7 @@ connected_parts(Connected) :-
     c_p(Xs, Connected).
 
 c_p(Connected, Connected) :-
-    \+ find_connected_pair(C1, C2).
+    \+ find_connected_pair(_1, _2).
 
 c_p(So_far, Connected) :-
     find_connected_pair(C1, C2),
@@ -24,7 +24,7 @@ c_p(So_far, Connected) :-
     merge(C1, C2, New_c),
     c_p([New_c|S2], Connected).
 
-find_connected_pair(C1, C2)
+find_connected_pair(C1, C2) :-
     member(C1, So_far),
     member(C2, So_far),
     C1 \= C2,
