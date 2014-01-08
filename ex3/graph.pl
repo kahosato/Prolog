@@ -15,20 +15,20 @@ connected_parts(Connected) :-
     c_p(Xs, Connected).
 
 c_p(Connected, Connected) :-
-    \+(member(C1, Connected),
-    member(C2, Connected),
-    C1 \= C2,
-    connected_c(C1, C2)).
+    \+ find_connected_pair(C1, C2).
 
 c_p(So_far, Connected) :-
-    member(C1, So_far),
-    member(C2, So_far),
-    C1 \= C2,
-    connected_c(C1, C2),
+    find_connected_pair(C1, C2),
     rm(C1, So_far, S1),
     rm(C2, S1, S2),
     merge(C1, C2, New_c),
     c_p([New_c|S2], Connected).
+
+find_connected_pair(C1, C2)
+    member(C1, So_far),
+    member(C2, So_far),
+    C1 \= C2,
+    connected_c(C1, C2).
 
 % function that removes element S on its first occurence.
 rm(S, L1, L2) :- rm(S, L1, [], L2).
