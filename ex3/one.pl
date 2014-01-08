@@ -11,13 +11,11 @@ p2([H|T], Y):-
     append([F,S], NY, Y).
 
 % tail recursive
-pairs(X, Y) :- p(X, [], Y).
-p([], A, A).
-p([H|T], A, Y):-
+p([], []).
+p([H|T], [(F, S)|Y]):-
     F is H-1,
     S is H+1,
-    append(A, [(F,S)], NA),
-    p(T, NA, Y).
+    p(T, Y).
 
 arbpairs(X, Y) :- ap(X, [], Y).
 ap([], A, A).
@@ -36,10 +34,10 @@ rw([H|T], A, Y):-
 
 rw2(X, Y) :- findall(wrap(A), member(A, X), Y).
 
-even_members(X, Y) :- em(X, o, [], Y)
-em([], _, A, A).
-em([_|T], o, A, Y) :- em(T, e, A, Y).
-em([H|T], e, A, Y) :- append(A, [H], NA), em(T, o, NA, Y ).
+even_members(X, Y) :- em(X, o, [])
+em([], _, []).
+em([_|T], o, L) :- em(T, e, L).
+em([H|T], e, [H|L]) :- em(T, o, Y ).
 
 numval(A, A):-number(A).
 numval(a(X, Y), V) :-
