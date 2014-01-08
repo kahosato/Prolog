@@ -51,5 +51,5 @@ connected_c([H|T], Y) :-
 
 merge(X, [], X).
 merge([], Y, Y).
-merge([H|T], [H2|T2], [H|T3]) :- H =< H2,!, merge(T, [H2|T2], T3).
+merge([H|T], [H2|T2], [H|T3]) :- H @=< H2,!, merge(T, [H2|T2], T3).
 merge([H|T], [H2|T2], [H2|T3]) :- merge([H|T], T2, T3).
