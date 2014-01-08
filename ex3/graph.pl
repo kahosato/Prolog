@@ -9,10 +9,10 @@ edge(p, m).
 edge(m, n).
 edge(n, t).
 edge(b, g).
-connected_parts(Connected) :- findall([X], node(X), Xs), c_p(Xs, Xs, Connected).
+connected_parts(Connected) :- findall([X], node(X), Xs), c_p(Xs, Connected).
 c_p(Connected, Connected) :-
-    \+(member(C1, So_far),
-    member(C2, So_far),
+    \+(member(C1, Connected),
+    member(C2, Connected),
     C1 \= C2,
     connected_c(C1, C2)).    
 c_p(So_far, Connected) :-
