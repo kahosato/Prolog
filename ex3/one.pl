@@ -113,3 +113,12 @@ q_sort([H|T], Acc, Sorted) :-
 pivoting(_, [], [], []).
 pivoting(H, [X|Y], [X|A1], A2) :- X =< H,!, pivoting(H, Y, A1, A2).
 pivoting(H, [X|Y], A1, [X|A2]) :- pivoting(H, Y, A1, A2).
+
+% loops if it backtracks.
+% because makeList(0, Item, something) can match both clauses.
+% makeList(0, Item, []).
+% makeList(N, Item, [Item|L]) :- NewN is N-1, makeList(NewN, Item, L).
+
+% make both clauses mutually exclusive
+makeList(0, Item, []).
+makeList(N, Item, [Item|L]) :- N > 0, NewN is N-1, makeList(NewN, Item, L).
