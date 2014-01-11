@@ -51,7 +51,7 @@ visited(N1-S1, History) :-
 
 remove(X, List, Remainder) :- member(X, List), rm(X, List, [], Remainder).
 rm(X, [X|T], A, R) :-
-    append(A, Y, R).
+    append(A, T, R).
 rm(X, [H|T], [H|A], R) :-
     rm(X, T, A, R).
 
