@@ -18,6 +18,7 @@ bank(L) :-
 
 safe([f|_]).
 safe(X) :-
+    \+ member(f, X),
     \+ (member(c, X), member(g, X)),
     \+ (member(g, X), member(w, X)).
 
@@ -52,14 +53,23 @@ crossing(N1-[f|S1], Move, [f|N2]-S2) :-
   Move = f. 
 
 succeeds(Seq) :-
-  journey([f, w, g, c, b]-[], [], [], Seq, 0).
+  journey([f, w, g, c, b]-[], [], [], Seq).
 
-journey(State, H, A, A, _) :-
+journey(State, H, A, A) :-
   goal(State), \+length(H, 0).
 
-journey(State, History, A, Seq, N) :-
-  NewN is N+1,
+journey(State, History, A, Seq) :-
   safe_state(State),
   \+ visited(State, History),
   crossing(State, Move, NewState),
-  journey(NewState, [State|History], [Move|A], Seq, NewN).
+  journey(NewState, [State|History], [Move|A], Seq).
+fees(f, 2).
+fees(f(_), 3).
+journey_cost(Seq, Cost):-
+  succeeds(Seq),
+  calculate(Seq, 0, Cost).
+calculate([], A, A).
+calculate([M|T], A, C):-
+  fees(M, F),
+  NewA is A + F,
+  calculate(T, NewA, C).
