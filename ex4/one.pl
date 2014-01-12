@@ -16,12 +16,8 @@ bank(L) :-
     nodup(L),
     forall(member(X, L), member(X, [g, c, b, w, f])).
 
-safe([f|X]) :-
-    bank(X).
-safe([X|Y]) :-
-    bank([X|Y]),!,
-    X == f ;
-    \+ member(f, X),
+safe([f|_]).
+safe(X) :-
     \+ (member(c, X), member(g, X)),
     \+ (member(g, X), member(w, X)).
 
@@ -29,29 +25,41 @@ safe_state(N-S) :-
     safe(N),
     safe(S).
 
+perm(A, B) :- sort(A, X), sort(B, X).
+
 equiv(N1-S1, N2-S2) :-
-    bank(N1),
-    bank(S1),
-    bank(N2),
-    bank(S2),!,
-    sort(N1, N),
-    sort(N2, N),
-    sort(S1, S),
-    sort(S2, S).
+  perm(N1, N2),
+  perm(S1, S2).
+goal(State) :-
+  equiv([]-[f, w, g, b, c], State).
 
-goal([]-[f|X]) :-
-    sort(X, [b, c, g, w]).
+visited(State, [S|H]) :- equiv(State, S), !; visited(State, H).
 
-visited(N1-S1, History) :-
-    sort(N1, N),
-    sort(S1, S),!,
-    member(N2-S2, History),
-    sort(N2, N),
-    sort(S2, S).
+remove(X, [X|T], T).
+remove(X, [H|T], [H|R]) :-
+    remove(X, T, R).
 
-remove(X, List, Remainder) :- member(X, List), rm(X, List, [], Remainder).
-rm(X, [X|T], A, R) :-
-    append(A, T, R).
-rm(X, [H|T], [H|A], R) :-
-    rm(X, T, A, R).
+crossing([f|N1]-S1 , Move, N2-[f|S2]) :- 
+  remove(X, N1, N2), S2 = [X|S1], Move = f(X);
+  N1 = N2,
+  S1 = S2, 
+  Move = f. 
 
+crossing(N1-[f|S1], Move, [f|N2]-S2) :-
+  remove(X, S1, S2), N2 = [X|N1], Move = f(X);
+  N1 = N2,
+  S1 = S2,
+  Move = f. 
+
+succeeds(Seq) :-
+  journey([f, w, g, c, b]-[], [], [], Seq, 0).
+
+journey(State, H, A, A, _) :-
+  goal(State), \+length(H, 0).
+
+journey(State, History, A, Seq, N) :-
+  NewN is N+1,
+  safe_state(State),
+  \+ visited(State, History),
+  crossing(State, Move, NewState),
+  journey(NewState, [State|History], [Move|A], Seq, NewN).
